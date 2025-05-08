@@ -376,3 +376,146 @@ For the input `"radar"`:
 
 The method returns `true` because all characters match symmetrically.
 
+## Java8 features
+Absolutely! Here are **Java 8 features explained with simple code examples**, each compared (where possible) to Java 7:
+
+---
+
+### 1. **Lambda Expressions**
+
+#### Java 7:
+
+```java
+Runnable r = new Runnable() {
+    public void run() {
+        System.out.println("Running in Java 7");
+    }
+};
+r.run();
+```
+
+#### Java 8:
+
+```java
+Runnable r = () -> System.out.println("Running in Java 8");
+r.run();
+```
+
+---
+
+### 2. **Functional Interfaces**
+
+```java
+@FunctionalInterface
+interface Calculator {
+    int add(int a, int b);
+}
+
+public class Example {
+    public static void main(String[] args) {
+        Calculator calc = (a, b) -> a + b;
+        System.out.println(calc.add(10, 20));
+    }
+}
+```
+
+---
+
+### 3. **Streams API**
+
+```java
+List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
+names.stream()
+     .filter(name -> name.startsWith("A"))
+     .forEach(System.out::println);  // Output: Alice
+```
+
+---
+
+### 4. **Default & Static Methods in Interfaces**
+
+```java
+interface Vehicle {
+    default void start() {
+        System.out.println("Vehicle started");
+    }
+
+    static void stop() {
+        System.out.println("Vehicle stopped");
+    }
+}
+
+class Car implements Vehicle {}
+
+new Car().start();     // Vehicle started
+Vehicle.stop();        // Vehicle stopped
+```
+
+---
+
+### 5. **New Date & Time API**
+
+```java
+import java.time.*;
+
+LocalDate date = LocalDate.now();
+LocalTime time = LocalTime.now();
+LocalDateTime dateTime = LocalDateTime.now();
+System.out.println(date);     // e.g., 2025-05-07
+System.out.println(time);     // e.g., 13:45:33
+```
+
+---
+
+### 6. **Optional Class**
+
+```java
+Optional<String> name = Optional.of("John");
+name.ifPresent(System.out::println);  // Output: John
+
+String defaultName = name.orElse("Default");
+```
+
+---
+
+### 7. **Nashorn JavaScript Engine**
+
+```java
+import javax.script.*;
+
+ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
+engine.eval("print('Hello from JavaScript')");
+```
+
+---
+
+### 8. **Method References**
+
+```java
+List<String> names = Arrays.asList("A", "B", "C");
+names.forEach(System.out::println);
+```
+
+---
+
+### 9. **Collectors API**
+
+```java
+Map<String, Long> countByLetter = names.stream()
+    .collect(Collectors.groupingBy(s -> s, Collectors.counting()));
+```
+
+---
+
+### 10. **Parallel Streams**
+
+```java
+List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+list.parallelStream().forEach(System.out::println);  // Runs in parallel
+```
+
+---
+
+Would you like these examples in a runnable mini project structure or explained in a downloadable PDF/markdown format?
+
+
