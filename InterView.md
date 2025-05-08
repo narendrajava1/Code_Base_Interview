@@ -518,4 +518,187 @@ list.parallelStream().forEach(System.out::println);  // Runs in parallel
 
 Would you like these examples in a runnable mini project structure or explained in a downloadable PDF/markdown format?
 
+Certainly! Let's break down **Dependency Injection (DI)** in Java with a focus on **Spring Framework**, which is widely used for implementing DI.
 
+---
+
+## 🔧 What is Dependency Injection?
+
+**Dependency Injection** is a design pattern used to remove the hard-coded dependencies between objects, making code more flexible, testable, and maintainable.
+
+### 💡 Core Idea:
+
+Instead of a class creating its own dependencies, **they are injected from the outside** (usually by a framework like Spring).
+
+---
+
+## 🧱 Key Concepts
+
+| Term                           | Meaning                                                                           |
+| ------------------------------ | --------------------------------------------------------------------------------- |
+| **Dependency**                 | An object that another object depends on                                          |
+| **Injection**                  | Supplying the dependency from outside rather than creating it inside              |
+| **IoC (Inversion of Control)** | The control of creating and managing dependencies is transferred to the framework |
+
+---
+
+## 📦 Types of Dependency Injection
+
+| Type                      | Example                                        |
+| ------------------------- | ---------------------------------------------- |
+| **Constructor Injection** | Dependencies are passed via constructor        |
+| **Setter Injection**      | Dependencies are set via public setters        |
+| **Field Injection**       | Dependencies are injected directly into fields |
+
+---
+
+## 🔨 Constructor Injection (Recommended)
+
+```java
+@Component
+public class Car {
+    private final Engine engine;
+
+    @Autowired
+    public Car(Engine engine) {
+        this.engine = engine;
+    }
+}
+```
+
+```java
+@Component
+public class Engine {
+    public void start() {
+        System.out.println("Engine started");
+    }
+}
+```
+
+---
+
+## 🔧 Setter Injection
+
+```java
+@Component
+public class Car {
+    private Engine engine;
+
+    @Autowired
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+}
+```
+
+---
+
+## 🔩 Field Injection (not preferred for testability)
+
+```java
+@Component
+public class Car {
+    @Autowired
+    private Engine engine;
+}
+```
+
+---
+
+## 🎯 Spring Configuration Example
+
+```java
+@SpringBootApplication
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext context = SpringApplication.run(App.class, args);
+        Car car = context.getBean(Car.class);
+        car.start();
+    }
+}
+```
+
+---
+
+## ✅ Why Use Dependency Injection?
+
+| Benefit                    | Description                                                          |
+| -------------------------- | -------------------------------------------------------------------- |
+| **Decoupling**             | Reduces tight coupling between classes                               |
+| **Easier Testing**         | Can inject mocks or stubs easily                                     |
+| **Better Maintainability** | Changes in dependencies do not affect the dependent classes directly |
+| **Code Reusability**       | More flexible and reusable components                                |
+
+---
+
+Would you like a small runnable Spring Boot demo project to practice constructor and setter injection?
+
+// File: Application.java
+package com.example.didemoproject;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Application {
+public static void main(String[] args) {
+SpringApplication.run(Application.class, args);
+}
+}
+
+// File: Car.java
+package com.example.didemoproject.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class Car {
+private final Engine engine;
+
+    @Autowired
+    public Car(Engine engine) {
+        this.engine = engine;
+    }
+
+    public void start() {
+        engine.start();
+    }
+}
+
+// File: Engine.java
+package com.example.didemoproject.service;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class Engine {
+public void start() {
+System.out.println("Engine started.");
+}
+}
+
+// File: CarController.java
+package com.example.didemoproject.controller;
+
+import com.example.didemoproject.service.Car;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class CarController {
+
+    private final Car car;
+
+    @Autowired
+    public CarController(Car car) {
+        this.car = car;
+    }
+
+    @GetMapping("/start-car")
+    public String startCar() {
+        car.start();
+        return "Car started successfully!";
+    }
+}
