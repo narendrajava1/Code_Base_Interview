@@ -29,6 +29,15 @@ public class SecondHighestSalary {
             System.out.println(department + ": " + avgSalary);
         });
 
+        // Group by and get count of employees in each department:
+        employees.stream().collect(Collectors.groupingBy(Employee::getDepartment,Collectors.counting())).forEach((department, numberOfEmployees) -> {
+            System.out.println(department + ": " + numberOfEmployees);
+        });
+
+        employees.stream().collect(Collectors.groupingBy(Employee::getDepartment,Collectors.collectingAndThen(Collectors.counting(),count->count+1))).forEach((department, numberOfEmployees) -> {
+            System.out.println(department + ": " + numberOfEmployees);
+        });
+
         //Optional Example
        String name = Optional.ofNullable((String) null).orElse("Default");
        System.out.println(name);
